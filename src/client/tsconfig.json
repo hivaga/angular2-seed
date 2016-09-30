@@ -17,7 +17,8 @@
     "noFallthroughCasesInSwitch": true,
     "typeRoots": [
       "../../node_modules/@types",
-      "../../node_modules"
+      "../../node_modules",
+      "../../node_modules/phaser/"
     ],
     "types": [
       "core-js",
@@ -25,7 +26,8 @@
       "jasmine",
       "node",
       "protractor",
-      "systemjs"
+      "systemjs",
+      "typescript"
     ]
   },
   "exclude": [

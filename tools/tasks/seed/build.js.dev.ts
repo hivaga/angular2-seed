@@ -20,13 +20,20 @@ let typedBuildCounter = Config.TYPED_COMPILE_INTERVAL; // Always start with the 
 export = () => {
   let tsProject: any;
   let typings = gulp.src([
-    Config.TOOLS_DIR + '/manual_typings/**/*.d.ts'
+    Config.TOOLS_DIR + '/manual_typings/**/*.d.ts',
+
+    // IGSoft
+    // We need manually to include Phaser typings since if we user 'import {Phaser} form "phaser"'
+    // in node_module/phaser/package.json reference to '"typings": ./typescript/typings.json"' and TS 2.x.x compiler
+    // does not accept 'typings.json' as source feed for *.d.ts files.
+    'node_modules/phaser/typescript/phaser.comments.d.ts'
   ]);
   let src = [
     join(Config.APP_SRC, '**/*.ts'),
     '!' + join(Config.APP_SRC, '**/*.spec.ts'),
     '!' + join(Config.APP_SRC, '**/*.e2e-spec.ts'),
-    '!' + join(Config.APP_SRC, `**/${Config.BOOTSTRAP_FACTORY_PROD_MODULE}.ts`)
+    '!' + join(Config.APP_SRC, `**/${Config.BOOTSTRAP_FACTORY_PROD_MODULE}.ts`
+    )
   ];
 
   let projectFiles = gulp.src(src);
