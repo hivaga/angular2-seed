@@ -48,6 +48,8 @@ gulp.task('build.prod', (done: any) =>
               'build.assets.prod',
               'build.html_css',
               'copy.prod',
+              'build.fonts',
+              'build.primeui',
               'build.js.prod',
               'build.bundles',
               'build.bundles.app',
@@ -64,6 +66,8 @@ gulp.task('build.prod.exp', (done: any) =>
               'build.assets.prod',
               'build.html_css',
               'copy.prod',
+              'build.fonts',
+              'build.primeui',
               'compile.ahead.prod',
               'build.js.prod.exp',
               'build.bundles',
@@ -151,3 +155,75 @@ gulp.task('clean.once', (done: any) => {
     done();
   }
 });
+
+// --------------
+// Desktop (Electron)
+
+// Development
+gulp.task('desktop', (done: any) =>
+	runSequence(
+		//'desktop.clean',
+		'build.dev',
+		//'desktop.libs',   // this thing copies the specific node modules which is IO intensive and slow operation
+		'desktop.symlink.node_modules', //create symbolic link to node_modules to avoid above ('desktop.libs') problem
+		'desktop.build',
+		done));
+
+gulp.task('desktop.with.clean', (done: any) =>
+	runSequence(
+		'desktop.clean',
+		'desktop',
+		done));
+
+// Release and Package
+
+// TODO: integrate prod build into electron package
+// gulp.task('desktop.prod', (done: any) =>
+//   runSequence('build.prod',
+//               'desktop.libs',
+//               'desktop.build',
+//               done));
+
+
+gulp.task('desktop.prod', (done: any) =>
+	runSequence('desktop.clean',
+		'build.prod',
+		'desktop.copy.main',
+		'desktop.build',
+		done));
+
+gulp.task('desktop.mac', (done: any) =>
+	runSequence(
+		'desktop.clean',
+		'desktop',
+		'desktop.package.mac',
+		done));
+
+gulp.task('desktop.mac.prod', (done: any) =>
+	runSequence('desktop.prod',
+		'desktop.package.mac',
+		done));
+
+gulp.task('desktop.windows', (done: any) =>
+	runSequence(
+		'desktop.clean',
+		'desktop',
+		'desktop.package.windows',
+		done));
+
+gulp.task('desktop.windows.prod', (done: any) =>
+	runSequence('desktop.prod',
+		'desktop.package.windows',
+		done));
+
+gulp.task('desktop.linux', (done: any) =>
+	runSequence(
+		'desktop.clean',
+		'desktop',
+		'desktop.package.linux',
+		done));
+
+gulp.task('desktop.linux.prod', (done: any) =>
+	runSequence('desktop.prod',
+		'desktop.package.linux',
+		done));
