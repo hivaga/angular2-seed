@@ -12,7 +12,7 @@ export = () => {
 	];
 
 	return vfs.src(src, { base: Config.APP_DEST, followSymlinks: false })
-		.pipe(electron({ version: '1.4.0', platform: 'win32', winIcon: 'src/client/assets/logo.ico' }))
-		.pipe(plugins.symdest(join(Config.APP_DEST)));
+		.pipe(electron({ version: '1.4.0', platform: 'win32', winIcon: 'src/client/assets/favicon.ico' }))
+		.pipe(plugins.symdest(join(Config.BUILD_DEST)));
 
 };

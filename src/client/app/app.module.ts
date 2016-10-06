@@ -11,9 +11,10 @@ import { AboutModule } from './about/about.module';
 import { HomeModule } from './home/home.module';
 import { SharedModule } from './shared/shared.module';
 import { PrimeModule } from './primeng/primeModule';
-
+import { PhaserModule } from './phaser/phaserModule';
 @NgModule({
-  imports: [PrimeModule, BrowserModule, HttpModule, RouterModule.forRoot(routes), AboutModule, HomeModule, SharedModule.forRoot()],
+  imports: [PhaserModule, PrimeModule, BrowserModule, HttpModule,
+            RouterModule.forRoot(routes), AboutModule, HomeModule, SharedModule.forRoot()],
   declarations: [AppComponent],
   providers: [{
     provide: APP_BASE_HREF,

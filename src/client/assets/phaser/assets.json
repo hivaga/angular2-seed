@@ -1,0 +1,24 @@
+{
+    "game": [],
+    "meta": {
+        "app": "Phaser Editor",
+        "copyright": "Arian Fornaris (c) 2015,2016",
+        "generated": "1472141051983",
+        "version": "1.0",
+        "url": "http://phasereditor.boniatillo.com"
+    },
+    "preloader": [
+        {
+            "type": "image",
+            "overwrite": false,
+            "key": "preloader-progress-bar-bg",
+            "url": "assets/phaser/images/preloader-progress-bar-bg.png"
+        },
+        {
+            "type": "image",
+            "overwrite": false,
+            "key": "preloader-progress-bar",
+            "url": "assets/phaser/images/preloader-progress-bar.png"
+        }
+    ]
+}

@@ -23,14 +23,19 @@ export class ProjectConfig extends SeedConfig {
   FONTS_SRC = ['node_modules/font-awesome/fonts/**']; //array of needed fonts to be copied in fonts folder
   FONTS_DEST = '/fonts';
   NODE_ENV = 'development';
+  BUILD_DEST = '';
 
   constructor() {
     super();
     //IG SOFT OVERWRITES
     this.APP_TITLE = 'HTML5 Poker Client';
     //analize type of build. In TARRGET_PLATFORM is one of web/windows/android/...etc
-    this.NODE_ENV =  (this.ENV === ENVIRONMENTS.DEVELOPMENT ? 'development':'production');
+    this.NODE_ENV = (this.ENV === ENVIRONMENTS.DEVELOPMENT ? 'development' : 'production');
     //the build folder will be as dist/web/..... 
+    let isDev: boolean = (this.ENV === ENVIRONMENTS.DEVELOPMENT);
+    let isWeb: boolean = true;
+    let isDesktop: boolean = false;
+    let isMobile: boolean = false;
     let platform = argv['platform'];
     if (!platform) {
       platform = 'web';
@@ -38,6 +43,9 @@ export class ProjectConfig extends SeedConfig {
     if (platform && platform.indexOf('desktop') > -1) {
       //===== DESKTOP =====
       if (platform.indexOf('.mac') > -1 || platform.indexOf('.windows') > -1 || platform.indexOf('.linux') > -1) {
+        isWeb = false;
+        isDesktop = true;
+        isMobile = false;
         if (platform.indexOf('.mac') > -1) {
           this.TARRGET_PLATFORM = PLATFORMS.MAC;
         } else if (platform.indexOf('.windows') > -1) {
@@ -72,6 +80,9 @@ export class ProjectConfig extends SeedConfig {
     } else if (platform && platform.indexOf('mobile') > -1) {
       //===== MOBILE =====
       if (platform.indexOf('.android') > -1 || platform.indexOf('.ios') > -1) {
+        isMobile = true;
+        isWeb = false;
+        isDesktop = false;
         if (platform.indexOf('.android') > -1) {
           this.TARRGET_PLATFORM = PLATFORMS.ANDROID;
         } else {
@@ -85,20 +96,25 @@ export class ProjectConfig extends SeedConfig {
         throw new Error('Unknown Mobile Platform: ' + platform);
       }
     }
+
     //as dist/windows/dev
     this.DIST_DIR = `dist/${this.TARRGET_PLATFORM}`;
     this.DEV_DEST = `${this.DIST_DIR}/dev`;
-    this.PROD_DEST = `${this.DIST_DIR}/prod`;
+    this.PROD_DEST = `${this.DIST_DIR}/` + (isDesktop  ? 'tmp' : (isDev?'dev' : 'prod'));
     this.APP_DEST = this.ENV === ENVIRONMENTS.DEVELOPMENT ? this.DEV_DEST : this.PROD_DEST;
     this.CSS_DEST = `${this.APP_DEST}/css`;
     this.JS_DEST = `${this.APP_DEST}/js`;
     this.PLUGIN_CONFIGS['browser-sync'].server.baseDir = `${this.APP_DEST}/`;
     this.FONTS_SRC = ['node_modules/font-awesome/fonts/**'];
     this.FONTS_DEST = `${this.APP_DEST}/fonts`;
-    console.log(this.APP_DEST);
-    //if (this.TARRGET_PLATFORM != PLATFORMS.ANDROID) {
-    //throw new Error('STOP ' + platform);
-    //}
+    this.BUILD_DEST = `${this.DIST_DIR}/` +  (isDesktop ? (isDev?'dev' : 'prod') : 'tmp');;
+ console.log('--------',this.DEV_DEST);
+    //console.log('=========',this.BUILD_DEST, this.PROD_DEST);
+    /*
+    if (this.TARRGET_PLATFORM != PLATFORMS.ANDROID) {
+    throw new Error('STOP ' + platform);
+    }
+    */
 
     /* Enable typeless compiler runs (faster) between typed compiler runs. */
     // this.TYPED_COMPILE_INTERVAL = 5;
@@ -111,9 +127,8 @@ export class ProjectConfig extends SeedConfig {
 
       // IGSoft Dependencies
       { src: 'phaser/build/phaser.js', inject: 'libs' },
-      { src: 'primeui/primeui-ng-all.min.js', inject: true },
-      { src: `primeui/themes/${this.PRIMEUI_THEME}/theme.css`, inject: true },	//injectcss theme of primeui (subfolder of css as css/omega)
-      { src: `primeui/primeui-ng-all.min.css`, inject: true },					//inject primeui css
+      { src: `primeng/resources/themes/${this.PRIMEUI_THEME}/theme.css`, inject: true },	//injectcss theme (subfolder of css as css/omega)
+      { src: `primeng/resources/primeng.min.css`, inject: true },					//inject primeui css
       { src: `font-awesome/css/font-awesome.min.css`, inject: true }						//inject font-awesome used from components of primeui
     ];
 

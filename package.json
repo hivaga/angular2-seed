@@ -6,10 +6,8 @@
     "url": "https://github.com/mgechev/angular2-seed"
   },
   "scripts": {
-    "build.dev": "gulp build.dev --color --config-env dev",
     "build.dev.watch": "gulp build.dev.watch --color",
     "build.e2e": "gulp build.e2e --color",
-    "build.prod": "gulp build.prod --color --config-env prod",
     "build.prod.exp": "gulp build.prod.exp --color --config-env prod",
     "build.test": "gulp build.test --color",
     "test.watch": "gulp test.watch --color",
@@ -25,14 +23,30 @@
     "serve.dev": "gulp serve.dev --color --config-env dev",
     "serve.e2e": "gulp serve.e2e --color",
     "serve.prod": "gulp serve.prod --color --config-env prod",
-    "start": "gulp serve.dev --color",
     "tasks.list": "gulp --tasks-simple --color",
     "test": "gulp test --color",
     "e2e.ci": "gulp build.prod --color && gulp build.js.e2e --color && gulp e2e --color",
     "tests.all": "npm test && npm run e2e.ci",
     "webdriver-start": "webdriver-manager start",
     "webdriver-update": "webdriver-manager update",
-    "start.desktop.windows": "gulp desktop.with.clean --config-env dev --platform desktop.windows&& SET NODE_ENV=development&&electron ./dist/windows/dev"
+    
+    "start": "gulp serve.dev --color", 
+    "build.dev": "gulp build.dev --color --config-env dev",
+    "build.prod": "gulp build.prod --color --config-env prod",
+    
+    "start.desktop.windows": "gulp desktop.with.clean --config-env dev --platform desktop.windows&& SET NODE_ENV=development&&electron ./dist/windows/dev",
+    "start.livesync.desktop.windows": "gulp desktop.with.clean --config-env dev --platform desktop.windows&& SET NODE_ENV=development&&gulp desktop.watch --config-env dev --platform desktop.windows",
+    "build.desktop.windows.dev": "gulp desktop.windows --config-env dev --platform desktop.windows&& SET NODE_ENV=development",
+    "build.desktop.windows.prod": "gulp desktop.windows.prod --config-env prod --platform desktop.windows&& SET NODE_ENV=production",
+
+    "start.desktop.mac": "gulp desktop.with.clean --config-env dev --platform desktop.mac&& SET NODE_ENV=development&&electron ./dist/mac/dev",
+    "start.livesync.desktop.mac": "gulp desktop.with.clean --config-env dev --platform desktop.mac&& NODE_ENV=development&&gulp desktop.watch --config-env dev --platform desktop.mac",
+    "build.desktop.mac.dev": "gulp desktop.mac --config-env dev --platform desktop.mac&& SET NODE_ENV=development",
+    "build.desktop.mac.prod": "gulp desktop.mac.prod  --config-env prod --platform desktop.mac&& SET NODE_ENV=production",
+
+    "start.desktop.linux": "gulp desktop.with.clean --config-env dev --platform desktop.linux&& SET NODE_ENV=development&&electron ./dist/linux/dev",
+    "build.desktop.linux.dev": "gulp desktop.linux --config-env dev --platform desktop.linux&& SET NODE_ENV=development",
+    "build.desktop.linux.prod": "gulp desktop.linux.prod --config-env prod --platform desktop.linux&& SET NODE_ENV=production"
   },
   "author": "Minko Gechev <mgechev>",
   "license": "MIT",
@@ -72,15 +86,11 @@
     "cssnano": "^3.7.3",
     "deep-extend": "^0.4.1",
     "doiuse": "^2.4.1",
-    "electron": "^1.4.2",
-    "electron-connect": "^0.4.2",
-    "electron-debug": "^1.0.0",
     "event-stream": "^3.3.3",
     "express": "~4.14.0",
     "express-history-api-fallback": "^2.0.0",
     "extend": "^3.0.0",
     "gulp": "^3.9.1",
-    "gulp-atom-electron": "^1.6.1",
     "gulp-cached": "^1.1.0",
     "gulp-clean-css": "^2.0.11",
     "gulp-concat": "^2.6.0",
@@ -131,9 +141,15 @@
     "tslint": "^3.13.0",
     "tslint-stylish": "2.1.0-beta",
     "typescript": "^2.0.2",
-    "vinyl-fs": "^2.4.3",
     "walk": "^2.3.9",
-    "yargs": "^4.8.0"
+    "yargs": "^4.8.0",
+
+    "gulp-symdest": "^1.0.0",
+    "electron": "^1.4.2",
+    "electron-connect": "^0.4.2",
+    "electron-debug": "^1.0.0",
+    "gulp-atom-electron": "^1.6.1",
+    "vinyl-fs": "^2.4.3"
   },
   "dependencies": {
     "@angular/common": "^2.0.0",
@@ -155,7 +171,6 @@
     "md5": "^2.2.1",
     "phaser": "^2.6.2",
     "primeng": "^1.0.0-beta.12",
-    "primeui": "^4.1.14",
     "font-awesome": "^4.6.3"
   }
 }

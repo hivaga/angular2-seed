@@ -6,6 +6,7 @@ import { join/*, sep, relative*/ } from 'path';
 
 import Config from '../../config';
 import { makeTsProject, templateLocals } from '../../utils';
+import { not_platform_scripts } from  '../../utils/project/not_platform_scripts';
 
 const plugins = <any>gulpLoadPlugins();
 
@@ -35,6 +36,8 @@ export = () => {
     '!' + join(Config.APP_SRC, `**/${Config.BOOTSTRAP_FACTORY_PROD_MODULE}.ts`
     )
   ];
+  src = not_platform_scripts(src, Config.APP_SRC);
+
 
   let projectFiles = gulp.src(src);
   let result: any;
@@ -43,7 +46,7 @@ export = () => {
   // Only do a typed build every X builds, otherwise do a typeless build to speed things up
   if (typedBuildCounter < Config.TYPED_COMPILE_INTERVAL) {
     isFullCompile = false;
-    tsProject = makeTsProject({isolatedModules: true});
+    tsProject = makeTsProject({ isolatedModules: true });
     projectFiles = projectFiles.pipe(plugins.cached());
     util.log('Performing typeless TypeScript compile.');
   } else {
@@ -67,17 +70,17 @@ export = () => {
 
   return result.js
     .pipe(plugins.sourcemaps.write())
-// Use for debugging with Webstorm/IntelliJ
-// https://github.com/mgechev/angular2-seed/issues/1220
-//    .pipe(plugins.sourcemaps.write('.', {
-//      includeContent: false,
-//      sourceRoot: (file: any) =>
-//        relative(file.path, PROJECT_ROOT + '/' + APP_SRC).replace(sep, '/') + '/' + APP_SRC
-//    }))
+    // Use for debugging with Webstorm/IntelliJ
+    // https://github.com/mgechev/angular2-seed/issues/1220
+    //    .pipe(plugins.sourcemaps.write('.', {
+    //      includeContent: false,
+    //      sourceRoot: (file: any) =>
+    //        relative(file.path, PROJECT_ROOT + '/' + APP_SRC).replace(sep, '/') + '/' + APP_SRC
+    //    }))
     .pipe(plugins.template(Object.assign(
       templateLocals(), {
         SYSTEM_CONFIG_DEV: jsonSystemConfig
       }
-     )))
+    )))
     .pipe(gulp.dest(Config.APP_DEST));
 };

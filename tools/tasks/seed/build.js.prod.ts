@@ -4,6 +4,7 @@ import { join } from 'path';
 
 import Config from '../../config';
 import { makeTsProject, templateLocals } from '../../utils';
+import { not_platform_scripts } from  '../../utils/project/not_platform_scripts';
 
 const plugins = <any>gulpLoadPlugins();
 
@@ -24,6 +25,8 @@ export = () => {
     join(Config.TMP_DIR, '**/*.ts'),
     '!' + join(Config.TMP_DIR, `**/${Config.BOOTSTRAP_FACTORY_PROD_MODULE}.ts`)
   ];
+  src = not_platform_scripts(src, Config.TMP_DIR);
+
   let result = gulp.src(src)
     .pipe(plugins.plumber())
     .pipe(plugins.inlineNg2Template(INLINE_OPTIONS))
